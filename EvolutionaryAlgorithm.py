@@ -1,7 +1,9 @@
+
 import numpy as np 
 import numpy.random as rnd
 import copy 
 import matplotlib.pyplot as plt 
+
 
 def Rastrigin(X):
     '''INPUTS
@@ -155,7 +157,7 @@ def mutation(d,particle_pos,bounds):
     '''
     prob=rnd.rand(d) #creates random numbers between 0-1
     for i in range(d): #for each dimension if the random number is greater than 0.99
-        if prob[i]>0.99: #give random coordinate in that dimension 
+        if prob[i]>0.975: #give random coordinate in that dimension 
             particle_pos[i]=rnd.uniform(bounds[i][0],bounds[i][1])
     return particle_pos
 
@@ -228,20 +230,22 @@ def evolution(f,bounds,p,iterations):
     plotutility(fstore,iterations)
     return 
 
-dimensions=10
-dimension_bounds=[-2,2]
+dimensions=5
+dimension_bounds=[-5,5]
 bounds=[0]*dimensions #creating 5 dimensional bounds
 for i in range(dimensions):
     bounds[i]=dimension_bounds
-
+f=Rastrigin 
+iterations=1000
+p=50
 
 '''
 This is just a test situation, Sphere function performed over 
-30 dimensions, with a population size of 100, and a generation count 
+30 dimensions, with a population size of 50, and a generation count 
 of 500
 '''
 
-evolution(Rastrigin,bounds,100,5000)
+evolution(f,bounds,p,iterations)
 
     
 
