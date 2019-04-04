@@ -16,9 +16,10 @@ These operations are described as follows:
 Select a certain percentage of the population to be 'killed', this is analagous to natural selection. Only the individuals with the lowest function value will survive. 
 
 ### Crossover 
+<img align='right' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/crossover.png" width="400">
 Two individuals from the population are then randomly chosen to produce a 'child'. The genetic information (here, it's coordinates) are a comination of that from the male and female individual. The way this combination is performed is exactly similar to that that happens in biological crossover. At a certain point along it's coordinates the information is simply swapped. It is easy to visualize with the help of the following diagram. 
 
-<img src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/crossover.png" width="400">
+
 
 ### Mutation 
 There exists a certain percentage chance that an error occurs during the crossover of information (here, a value of any coordinate). However unfortunately computers are generally quite reliable at doing things like adding numbers (who would've thought!?). So this random chance of a mutation has to be simulated. 
@@ -77,7 +78,7 @@ after  1000  iterations, optimum at:  [ 2.76392402e-03  2.72713257e-04  8.125755
  -3.18200901e-05  6.68961945e-04]
  ```
 
- <img src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/outputgraph.png" width="400">
+ <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/outputgraph.png" width="400">
 
 
 ## Authors
