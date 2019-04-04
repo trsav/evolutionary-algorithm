@@ -2,9 +2,6 @@
 
 <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/Sty.gif" width="300"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/StyFUNC.gif" width="300"> 
 
-<img align='center'src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolution.gif" width="400"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolutionFUNC.gif" width="400"> 
-
-
 ## Evolutionary Algorithm Background
 An evolutionary algorithm is a method of stochastic optimization. 
 Simply, there exists a population of 'indiviuals' (charactorized by a set of coordinates) within a funciton space. These individuals interact through the heuristic of evolution. Within an actual evolutionary processe it is the genetic information that exists within the chromosomes that is effected during reproduction, here it is the coordinates that define each individual that serve as this genetic information. 
@@ -21,7 +18,6 @@ Select a certain percentage of the population to be 'killed', this is analagous 
 Two individuals from the population are then randomly chosen to produce a 'child'. The genetic information (here, it's coordinates) are a comination of that from the male and female individual. The way this combination is performed is exactly similar to that that happens in biological crossover. At a certain point along it's coordinates the information is simply swapped. It is easy to visualize with the help of the following diagram. 
 
 
-
 ### Mutation 
 There exists a certain percentage chance that an error occurs during the crossover of information (here, a value of any coordinate). However unfortunately computers are generally quite reliable at doing things like adding numbers (who would've thought!?). So this random chance of a mutation has to be simulated. 
 Here, a random number is created between 0-1, and if this number is less than the percentage of a mutation to occur, a random value is assigned to that specific dimension and individual.
@@ -31,10 +27,7 @@ It is this random mutation that is at the core of evolutionary theory. It allows
  I like to imagine God all those years ago coding his very own implimentation, only to restart his program because it converged on a worm or something. Who knows.  
 
 
-
- ### Limitations
-
-
+<img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolution.gif" width="400"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolutionFUNC.gif" width="400"> 
 
 ### Prerequisites
 
