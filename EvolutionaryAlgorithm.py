@@ -15,11 +15,13 @@ def evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=False):
     returns new population 
 
     INPUTS: 
-    f         : function to be optimized
-    bounds    : bounds of function to be optimized 
-                in form [[xl,xu],[xl,xu],[xl,xu]]
-    p         : population size 
-    iterations: number of generations 
+    f           : function to be optimized
+    bounds      : bounds of function to be optimized 
+                  in form [[xl,xu],[xl,xu],[xl,xu]]
+    p           : population size 
+    iterations  : number of generations 
+    cull_percen : percentage of particles to be culled after each generation
+    mut_percen  : percentage chance of a mutation to occur 
 
     OUTPUTS: 
     returns the best individual after specified iterations 
@@ -38,13 +40,8 @@ def evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=False):
             #based on function value (low to high)
 
         individual_pos,p=selection(individual_pos,p,cull_percen) #select the best individuals
-        while p<p_init:
-            individual_pos=np.concatenate((individual_pos,individual_pos),axis=0)
-            p=len(individual_pos)
-        individual_pos=individual_pos[:p_init]
         p=len(individual_pos)
-        #as the population is now half the size, it is duplicated 
-        #I guess this would be similar to creating twins 
+
 
         '''
         This next section of code performs the cross over. 
@@ -54,16 +51,25 @@ def evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=False):
         population. It then replaces the original individuals with the crossed over 
         coordinates.
         '''
+        child_positions=np.zeros((p,d))
         for i in range(int(p/2)):
-            female_index=list(range(0,int((p/2)))) 
+            female_index=list(range(0,int(p/2))) 
             rnd.shuffle(female_index) #shuffling second half
             male_individual=individual_pos[i,:] #selecting first individual
             female_individual=individual_pos[int((p/2))+female_index[i],:]
             #selecting first individual in second half
-            male_individual,female_individual=\
-                crossover(male_individual,female_individual) #performing crossover
-            individual_pos[i,:]=male_individual[:] #replacing individuals
-            individual_pos[int(p/2)+female_index[i],:]=female_individual[:]
+            child1_individual,child2_individual\
+                =crossover(male_individual,female_individual) #performing crossover
+            child_positions[i,:]=child1_individual[:]
+            child_positions[i+int((p/2)),:]=child2_individual[:]
+
+        while p<p_init:
+            individual_pos=np.concatenate((individual_pos,child_positions),axis=0)
+            p=len(individual_pos)
+
+        individual_pos=individual_pos[:p_init]
+        p=len(individual_pos)
+
 
         for i in range(p):
             individual_pos[i]=mutation(d,individual_pos[i],bounds,mut_percen)
@@ -86,17 +92,16 @@ def evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=False):
 
     return 
 
-dimensions=15  #setting dimensions of problem (# of variables)
+dimensions=10  #setting dimensions of problem (# of variables)
 dimension_bounds=[-3,3]  #setting bounds (in this case a hypercube)
 bounds=[0]*dimensions 
 for i in range(dimensions):
     bounds[i]=dimension_bounds #creating bounds in the form [[xl,xu],[xl,xu]...]
-f=rosenbrock#function to be optimized 
-iterations=2000 #number of iterations
-cull_percen=0.75
-mut_percen=0.95
-p=60 #population size
-
+f=rastrigin #function to be optimized 
+iterations=1000 #number of iterations
+cull_percen=0.9 #percentage of particles to be culled 
+mut_percen=0.05 #percentage chance of a mutation 
+p=100 #population size
 
 evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=True) 
 

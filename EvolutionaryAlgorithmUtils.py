@@ -87,7 +87,7 @@ def selection(individual_pos,p,cull_percen):
 
     OUTPUTS:
     individual_pos : new matrix of individual positions after 
-                   culling 50% 
+                   culling a certain percentage 
     p            : new number of individual
 
     '''
@@ -109,8 +109,8 @@ def crossover(male_individual,female_individual):
     female_individual     : d dimensional array of coordinates
 
     OUTPUTS: 
-    male_individual       : crossed over set of male coordinates
-    female_individual     : crossed over set of male coordinates
+    child1_individual       : crossed over set of male coordinates
+    child2_individual     : crossed over set of male coordinates
     '''
     male_copy=male_individual[:]
     female_copy=female_individual[:]
@@ -133,14 +133,14 @@ def mutation(d,individual_pos,bounds,mut_percen):
     d               : number of dimensions
     individual_pos    : d dimensional array of coordinates 
     bounds          : bounds of the problem ([[xl,xu],[xl,xu]...])
-    mut_percen      : percentage chance of a mutation not to occur (0-1)
+    mut_percen      : percentage chance of a mutation to occur (0-1)
     OUTPUTS: 
     individual_pos    : d dimensional array of mutated coordinates
 
     '''
     prob=rnd.rand(d) #creates random numbers between 0-1
     for i in range(d): #for each dimension if the random number is greater than 0.99
-        if prob[i]>mut_percen: #give random coordinate in that dimension 
+        if prob[i]<mut_percen: #give random coordinate in that dimension 
             individual_pos[i]=rnd.uniform(bounds[i][0],bounds[i][1])
     return individual_pos
 
