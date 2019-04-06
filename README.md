@@ -1,6 +1,6 @@
 # Evolutionary Algorithm within Python
 
-<img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/Sty.gif" width="300"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/StyFUNC.gif" width="300"> 
+<img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/schwefelplot.gif" width="400"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/schwefelfunc.gif" width="400"> 
 
 ## Evolutionary Algorithm Background
 An evolutionary algorithm is a method of stochastic optimization. 
