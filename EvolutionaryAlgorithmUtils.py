@@ -118,9 +118,9 @@ def crossover(male_individual,female_individual):
 
     random_split=rnd.randint(0,d)
 
-    for i in range(random_split):
-        male_individual[i]=female_copy[i]
-        female_individual[i]=male_copy[i]
+    
+    male_individual[:random_split]=female_copy[:random_split]
+    female_individual[:random_split]=male_copy[:random_split]
 
     return male_individual,female_individual
 
