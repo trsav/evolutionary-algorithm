@@ -49,16 +49,18 @@ OUTPUTS:
 ## Example
 Running the following: 
 ```
-dimensions=5  #setting dimensions of problem (# of variables)
-dimension_bounds=[-5,5]  #setting bounds (in this case a hypercube)
+dimensions=5                   #setting dimensions of problem (# of variables)
+dimension_bounds=[-5,5]        #setting bounds (in this case a hypercube)
+
 bounds=[0]*dimensions 
 for i in range(dimensions):
     bounds[i]=dimension_bounds #creating bounds in the form [[xl,xu],[xl,xu]...]
-f=rastrigin #function to be optimized 
-iterations=1000 #number of iterations
-cull_percen=0.9 #percentage of particles to be culled 
-mut_percen=0.05 #percentage chance of a mutation 
-p=100 #population size
+    
+f=rastrigin                    #function to be optimized 
+iterations=1000                #number of iterations
+cull_percen=0.9                #percentage of particles to be culled 
+mut_percen=0.05                #percentage chance of a mutation 
+p=100                          #population size
 
 evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=True)
 ```
