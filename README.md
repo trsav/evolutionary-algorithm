@@ -19,12 +19,10 @@ Two individuals from the population are then randomly chosen to produce a 'child
 
 
 ### Mutation 
-There exists a certain percentage chance that an error occurs during the crossover of information (here, a value of any coordinate). However unfortunately computers are generally quite reliable at doing things like adding numbers (who would've thought!?). So this random chance of a mutation has to be simulated. 
+There exists a certain percentage chance that an error occurs during the crossover of information (here, a value of any coordinate). However unfortunately computers are generally quite reliable at doing things like adding numbers. So this random chance of a mutation has to be simulated. 
 Here, a random number is created between 0-1, and if this number is less than the percentage of a mutation to occur, a random value is assigned to that specific dimension and individual.
 
-It is this random mutation that is at the core of evolutionary theory. It allows the individuals to explore the search space and (hopefully) converge on the global solution.
-
- I like to imagine God all those years ago coding his very own implimentation, only to restart his program because it converged on a worm or something. Who knows.  
+It is this random mutation that is at the core of evolutionary theory. It allows the individuals to explore the search space and (hopefully) converge on the global solution. 
 
 
 <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolution.gif" width="400"> <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/RastriginEvolutionFUNC.gif" width="400"> 
