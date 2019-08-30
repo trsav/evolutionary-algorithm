@@ -4,7 +4,7 @@
 
 ## Evolutionary Algorithm Background
 An evolutionary algorithm is a method of stochastic optimization. 
-Simply, there exists a population of 'individuals' (characterized by a set of coordinates) within a function space. These individuals interact through the heuristic of evolution. Within an actual evolutionary processe it is the genetic information that exists within the chromosomes that is effected during reproduction, here it is the coordinates that define each individual that serve as this genetic information. 
+Simply, there exists a population of 'individuals' (characterized by a set of coordinates) within a function space. These individuals interact through the heuristic of evolution. Within an actual evolutionary process it is the genetic information that exists within the chromosomes that is effected during reproduction, here it is the coordinates that define each individual that serve as this genetic information. 
 
 A number of operations are performed on this information allowing the population to 'evolve' over each 'generation' (an evolutionary algorithm buzzword for iteration, you'll find that there are a lot of buzzwords within this field). 
 
