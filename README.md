@@ -40,7 +40,7 @@ It is this random mutation that is at the core of evolutionary theory. It allows
 
 ### Prerequisites
 
-Python 3.0 is required. The ParticleSwarmUtility.py file must be in the same directory as the ParticleSwarm.py file in order to enable the utility to be used.
+Python 3.0 is required. SMT toolbox must be installed and can be done so by following the instructions within the documentation. https://smt.readthedocs.io/en/latest/
 
 ## Function Use
 ```
@@ -54,36 +54,25 @@ INPUTS:
     mut_percen  : percentage chance of a mutation to occur 
 
 OUTPUTS: 
-    returns the best individual after specified iterations 
-    as well as a plot of function value per generation
+    returns the coordinates of the best individual
 ```
 ## Example
 Running the following: 
 ```
-dimensions=5                   #setting dimensions of problem (# of variables)
-dimension_bounds=[-5,5]        #setting bounds (in this case a hypercube)
-
-bounds=[0]*dimensions 
-for i in range(dimensions):
-    bounds[i]=dimension_bounds #creating bounds in the form [[xl,xu],[xl,xu]...]
-    
-f=rastrigin                    #function to be optimized 
-iterations=1000                #number of iterations
-cull_percen=0.9                #percentage of particles to be culled 
-mut_percen=0.05                #percentage chance of a mutation 
-p=100                          #population size
-
-evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=True)
+d = 10 # dimensions
+p = 60 # population size
+f = tf.Rastrigin # function to be optimised
+bounds = np.array([[-3,3] for i in range(d)]) # bounds for optimisation
+iterations = 1000 # iterations 
+mutation_percent = 0.05 # percentage chance of a mutation 
+cull_percent = 0.95 # percentage of populations to be 'killed'
+print(evolution(f,bounds,p,iterations,cull_percent,mutation_percent))
 ```
 
 Produces the following output: 
 ```
-after  1000  iterations, optimum at:  [ 2.76392402e-03  2.72713257e-04  8.12575512e-04 -1.55932101e-04
- -1.96639538e-03  2.59868763e-03  5.72311737e-03  7.54927209e-04
- -3.18200901e-05  6.68961945e-04]
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
  ```
-
- <img align='center' src="https://github.com/TomRSavage/EvolutionaryAlgorithm/blob/master/outputgraph.png" width="400">
 
 
 ## Authors
