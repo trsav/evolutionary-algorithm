@@ -1,122 +1,101 @@
-
 import numpy as np 
 import numpy.random as rnd
+import matplotlib.pyplot as plt 
+from smt.sampling_methods import LHS
 import copy 
-from EvolutionaryAlgorithmUtils import *
-
-def evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=False):
+import time
+ 
+ 
+def evolution(f,bounds,p,it,cull_percen,mut_percen):
+    
     '''
-    Performs initial evolution step: 
-    initializes individuals, 
-    selects best candidates
-    performs cross-over
-    creates children
-    performs mutations 
-    returns new population 
-
     INPUTS: 
     f           : function to be optimized
     bounds      : bounds of function to be optimized 
                   in form [[xl,xu],[xl,xu],[xl,xu]]
     p           : population size 
-    iterations  : number of generations 
+    it          : number of generations 
     cull_percen : percentage of particles to be culled after each generation
     mut_percen  : percentage chance of a mutation to occur 
 
     OUTPUTS: 
-    returns the best individual after specified iterations 
-    as well as a plot of function value per generation 
+    returns the coordinates of the best individual
     '''
-    p_init=p
-    d,individual_pos,individual_pos_val,population_best=\
-        initiation(f,bounds,p) #creates population
 
-    if plot==True: #creating function store array if plot wanted
-        fstore=[]
-
-    for it in range(iterations): 
-        individual_pos,individual_pos_val=\
-            individualsort(p,individual_pos,individual_pos_val,d) #sort all individuals
-            #based on function value (low to high)
-
-        individual_pos,p=selection(individual_pos,p,cull_percen) #select the best individuals
-        p=len(individual_pos)
-
-
-        '''
-        This next section of code performs the cross over. 
-        It first 'shuffles' the second half of individuals, then iterates over 
-        the population performing the crossover function on the first individual in the
-        population, with the first individual in the shuffled second half of the 
-        population. It then replaces the original individuals with the crossed over 
-        coordinates.
-        '''
-        child_positions=np.zeros((p,d))
-        for i in range(int(p/2)):
-            female_index=list(range(0,int(p/2))) 
-            rnd.shuffle(female_index) #shuffling second half
-            male_individual=individual_pos[i,:] #selecting first individual
-            female_individual=individual_pos[int((p/2))+female_index[i],:]
-            #selecting first individual in second half
-            child1_individual,child2_individual\
-                =crossover(male_individual,female_individual) #performing crossover
-            child_positions[i,:]=child1_individual[:]
-            child_positions[i+int((p/2)),:]=child2_individual[:]
-
-        while p<p_init:
-            individual_pos=np.concatenate((individual_pos,child_positions),axis=0)
-            p=len(individual_pos)
-
-        individual_pos=individual_pos[:p_init]
-        p=len(individual_pos)
-
-
-        for i in range(p):
-            individual_pos[i]=mutation(d,individual_pos[i],bounds,mut_percen)
-
-        #evaluating new fitnesses of the population and getting the function 
-        #value of the best individual
-        individual_pos_val=fitnesses(f,p,individual_pos)
-        population_best=individual_pos[np.argmin(individual_pos_val)]
-        best_val=f(population_best)
-        #displaying best function value
-        print('Iteration number: ',it,' Current best fitness: ',best_val)
-
-        if plot==True: #adding best value to function store array 
-            fstore.append(best_val)
-    
-    if plot==True: 
-        plotutility(fstore,iterations)
-
-    print('after ',iterations,' iterations, optimum at: ',population_best)
-
-    return 
-
-dimensions=10  #setting dimensions of problem (# of variables)
-dimension_bounds=[-3,3]  #setting bounds (in this case a hypercube)
-bounds=[0]*dimensions 
-for i in range(dimensions):
-    bounds[i]=dimension_bounds #creating bounds in the form [[xl,xu],[xl,xu]...]
-f=rastrigin #function to be optimized 
-iterations=1000 #number of iterations
-cull_percen=0.9 #percentage of particles to be culled 
-mut_percen=0.05 #percentage chance of a mutation 
-p=100 #population size
-
-evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=True) 
+    d=len(bounds)
+    '''ORIGINAL SAMPLE'''
+    sampling=LHS(xlimits=bounds) #LHS Sample
+    i_pos=sampling(p)
+    '''EVALUATING FITNESSES'''
+    i_val=np.zeros((len(i_pos),1))
+    for i in range(len(i_pos)):
+        i_val[i,:]=f(i_pos[i,:])
+    i_pos=np.concatenate((i_pos,i_val),axis=1)
+    i_best=i_pos[np.argmin(i_pos[:,-1])]
+    iteration=0
+    while iteration<it: #PARAMETER HERE (iterations)
+        '''TOURNAMENT SELECTION'''
+        i_new=np.zeros((int(p*(cull_percen)),d+1)) # PARAMETER HERE (percentage to be kept)
+        new_count=0
+        while new_count<len(i_new):
+            rnd.shuffle(i_pos)
+            t_size=rnd.randint(1,5) # PARAMETER HERE (tournament size)
+            t=i_pos[:t_size,:]
+            t_best=t[np.argmin(t[:,-1])]
+            i_new[new_count,:]=t_best[:]
+            new_count+=1
+        i_pos=copy.deepcopy(i_new)
+        '''COMPLETING WITH RANDOM CANDIDATES'''
+        new_psize=p-len(i_pos)
+        sampling=LHS(xlimits=bounds)
+        i_new=sampling(new_psize)
+        i_val_new=np.zeros((len(i_new),1))
+        for i in range(len(i_new)):
+            i_val_new[i,:]=f(i_new[i,:])
+        i_new=np.concatenate((i_new,i_val_new),axis=1)
+        i_pos=np.concatenate((i_new,i_pos),axis=0)
+        best_index=np.argmin(i_pos[:,-1])
+        i_best=i_pos[best_index]
+        i_best_val=i_pos[best_index,-1]
+        print(i_best_val,end='\r')
+        '''CROSSOVER HERE'''
+        rnd.shuffle(i_pos)
+        cross_index=np.linspace(0,p-2,(p/2))
+        for i in cross_index: # SINGLE CROSSOVER
+            i=int(i)
+            k=rnd.randint(0,d)
+            i_pos[i+1,k:]=i_pos[i,k:]
+            i_pos[i+1,:k]=i_pos[i+1,:k]
+            i_pos[i,:k]=i_pos[i,:k]
+            i_pos[i,k:]=i_pos[i+1,k:]
+        '''MUTATION CODE HERE'''
+        for i in range(len(i_pos)):
+            for j in range(d):
+                prob=rnd.uniform()
+                if prob<mut_percen:
+                    i_pos[i,j]=rnd.uniform(bounds[j,0],bounds[j,1])
+        i_pos=i_pos[:,:-1]
+        i_val=np.zeros((len(i_pos),1))
+        for i in range(len(i_pos)):
+            i_val[i,:]=f(i_pos[i,:])
+        i_pos=np.concatenate((i_pos,i_val),axis=1)
+        iteration+=1
+    return i_best
 
 
+def Rastrigin(X): # test function 
+    an=10*len(X)
+    f_sum=sum(X[i]**2-(10*np.cos(2*np.pi*X[i]))for i in range(len(X)))
+    return an+f_sum
 
-    
-
-    
-
-
-        
-
-
-
-    
+d = 10 # dimensions
+p = 60 # population size
+f = Rastrigin # function to be optimised
+bounds = np.array([[-3,3] for i in range(d)]) # bounds for optimisation
+iterations = 1000 # iterations 
+mutation_percent = 0.05 # percentage chance of a mutation 
+cull_percent = 0.95 # percentage of populations to be 'killed'
+print(evolution(f,bounds,p,iterations,cull_percent,mutation_percent))
 
 
 
@@ -125,15 +104,4 @@ evolution(f,bounds,p,iterations,cull_percen,mut_percen,plot=True)
 
 
 
-        
-
-
-
-
-
-
-
-
-
-
-
+ 
