@@ -10,6 +10,15 @@ A number of operations are performed on this information allowing the population
 
 These operations are described as follows:
 
+### Sampling
+The initial distribution of individuals can have great bearing over the final optimal solution.
+
+<img align='left' src="https://github.com/TomRSavage/Surrogate-Optimization/blob/master/LHSpic.png" width="200">
+
+The distribution of individuals within the function space is performed using a 'Latin Hypercube Sample'. Whilst distributing randomly can result in an unrepresentative space covered, something more structured like a Latin Hypercube Sample allows for a less a better representation. 
+
+It is performed similar to how a suduko is filled in; the space is divided into a grid, and no one sample point can be present in the same row, collumn, or equivalent higher dimensional axis as another. 
+
 ### Selection 
 There are many methods of choosing the fittest members of the population to survive to the next generation, the simplest being to just choose the fittest X% of the population. This however can lead to premature convergence due to elitism. 
 A popular method of choosing the next generation of individuals is tournament selection. An advantage of tournament selection is that the population doesn't have to be sorted from highest to lowest fitness, thus saving compuational effort. 
